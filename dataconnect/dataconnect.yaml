@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "love-letter"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "love-letter-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
