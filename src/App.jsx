@@ -131,7 +131,7 @@ const NavBar = ({ isMobileMenuOpen, onToggleMenu, onToggleCreateForm, showCreate
       <div className="flex h-20 items-center justify-between">
         <div className="flex items-center justify-between">
           <a href="/index.html" className="flex items-center mr-4">
-            <span className="text-4xl mr-2 animate-pulse-slow">❤️</span>
+            <span className="text-3xl mr-2 animate-pulse-slow">❤️</span>
             <span className="hidden md:block text-white text-2xl font-bold ml-2">CherishedWords</span>
           </a>
         </div>
