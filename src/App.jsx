@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { db, auth } from './firebase-config';
 import { collection, addDoc, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword} from 'firebase/auth';
 import CreateCardForm from './CreateCardForm';
 import Auth from './components/Auth';
 import './styles/card.css';
@@ -141,7 +141,7 @@ const NavBar = ({ isMobileMenuOpen, onToggleMenu, onToggleCreateForm, showCreate
       <div className="flex h-20 items-center justify-between">
         <div className="flex items-center justify-between">
           <a href="/index.html" className="flex items-center mr-4">
-            <img className="h-10" src="/api/placeholder/40/40" alt="CherishedWords" />
+            <span className="text-4xl mr-2 animate-pulse-slow">❤️</span>
             <span className="hidden md:block text-white text-2xl font-bold ml-2">CherishedWords</span>
           </a>
         </div>
@@ -187,12 +187,25 @@ const HeroSection = () => (
 const Card = ({ card, isFlipped, onDelete, onUnlock, onToggleFlip }) => {
   const passwordRef = useRef();
 
+  const handleUnlock = (e) => {
+    e.stopPropagation();
+    onUnlock(passwordRef.current.value);
+  };
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    onDelete();
+  };
+
   return (
     <div className="perspective-1000 h-96">
-      <div className={`card-container ${isFlipped ? 'flipped' : ''}`}>
+      <div 
+        className={`card-container ${isFlipped ? 'flipped' : ''}`}
+        onClick={onToggleFlip}
+      >
         <div className="card-front rounded-xl p-5 flex flex-col items-center justify-center"
           style={{ backgroundColor: card.creator === 'girlfriend' ? '#ec4899' : '#0ea5e9' }}>
-          <button onClick={onDelete} className="absolute top-3 right-3 bg-white/30 w-8 h-8 rounded-full">
+          <button onClick={handleDelete} className="absolute top-3 right-3 bg-white/30 w-8 h-8 rounded-full">
             ×
           </button>
           <div className="text-xl mb-4 text-white">To: {card.recipient}</div>
@@ -202,15 +215,16 @@ const Card = ({ card, isFlipped, onDelete, onUnlock, onToggleFlip }) => {
             type="password"
             className="w-4/5 p-3 rounded-lg text-center bg-white/20 placeholder-white text-white"
             placeholder="Enter password"
+            onClick={(e) => e.stopPropagation()}
           />
-          <button onClick={() => onUnlock(passwordRef.current.value)} className="mt-3 bg-white/20 px-4 py-2 rounded-lg text-white">
+          <button 
+            onClick={handleUnlock} 
+            className="mt-3 bg-white/20 px-4 py-2 rounded-lg text-white"
+          >
             Unlock Love
           </button>
         </div>
-        <div 
-          onClick={onToggleFlip}
-          className="card-back rounded-xl p-5 bg-white flex flex-col items-center"
-        >
+        <div className="card-back rounded-xl p-5 bg-white flex flex-col items-center">
           <div className="p-4 text-center max-h-72" style={{ color: card.creator === 'girlfriend' ? '#ec4899' : '#0ea5e9' }}>
             {card.message}
           </div>
@@ -223,10 +237,11 @@ const Card = ({ card, isFlipped, onDelete, onUnlock, onToggleFlip }) => {
   );
 };
 
+
 const Modal = ({ children, onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
     <div className="relative bg-white p-6 rounded-lg max-w-lg w-full" onClick={(e) => e.stopPropagation()}>
-      <button className="absolute top-4 right-4 text-gray-500" onClick={onClose}>
+      <button className="absolute top-0 right-2 text-gray-500 text-2xl" onClick={onClose}>
         ×
       </button>
       {children}
@@ -242,7 +257,7 @@ const CardGallery = ({ children }) => (
 
 const ShowMoreButton = () => (
   <section className="m-auto max-w-lg my-10 px-6">
-    <button className="block w-full bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700">
+    <button className="block w-full bg-pink-500 text-white text-center py-4 px-6 rounded-xl hover:bg-pink-400">
       Show more
     </button>
   </section>
