@@ -73,16 +73,6 @@ const App = () => {
     }
   };
 
-  const deleteCard = async (id) => {
-    try {
-      await deleteDoc(doc(db, 'loveLetters', id));
-      setCards(cards.filter(card => card.id !== id));
-    } catch (error) {
-      console.error('Error deleting card:', error);
-      alert('Failed to delete card: ' + error.message);
-    }
-  };
-
   const tryUnlock = (id, password) => {
     const card = cards.find((c) => c.id === id);
     if (card && password === card.password) {
@@ -197,17 +187,21 @@ const Card = ({ card, isFlipped, onDelete, onUnlock, onToggleFlip }) => {
     onDelete();
   };
 
+  const handleCardClick = (e) => {
+    // Only allow flipping back when the card is already unlocked
+    if (isFlipped) {
+      onToggleFlip();
+    }
+  };
+
   return (
     <div className="perspective-1000 h-96">
       <div 
         className={`card-container ${isFlipped ? 'flipped' : ''}`}
-        onClick={onToggleFlip}
+        onClick={handleCardClick}
       >
         <div className="card-front rounded-xl p-5 flex flex-col items-center justify-center"
           style={{ backgroundColor: card.creator === 'girlfriend' ? '#ec4899' : '#0ea5e9' }}>
-          <button onClick={handleDelete} className="absolute top-3 right-3 bg-white/30 w-8 h-8 rounded-full">
-            ×
-          </button>
           <div className="text-xl mb-4 text-white">To: {card.recipient}</div>
           <div className="text-4xl mb-5 animate-pulse-slow">❤️</div>
           <input
@@ -236,6 +230,7 @@ const Card = ({ card, isFlipped, onDelete, onUnlock, onToggleFlip }) => {
     </div>
   );
 };
+
 
 
 const Modal = ({ children, onClose }) => (
