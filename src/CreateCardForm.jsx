@@ -19,6 +19,12 @@ const CreateCardForm = ({ onAddCard }) => {
     });
   };
 
+  const getButtonColor = () => {
+    return formData.creator === 'girlfriend' 
+      ? 'bg-pink-500 hover:bg-pink-600' 
+      : 'bg-blue-500 hover:bg-blue-600';
+  };
+
   return (
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
       <div className="space-y-4">
@@ -56,7 +62,7 @@ const CreateCardForm = ({ onAddCard }) => {
         />
         <button
           type="submit"
-          className="w-full bg-pink-500 text-white py-2 rounded hover:bg-pink-600"
+          className={`w-full ${getButtonColor()} text-white py-2 rounded`}
         >
           Create Love Letter
         </button>
